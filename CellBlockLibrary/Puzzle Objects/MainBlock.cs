@@ -36,9 +36,6 @@ namespace CellBlockLibrary
 
   
 
-
-
-
         /// <summary>
         /// Add the This.index to the Possible Index of all cells contained within all Possible Blocks of this block
         /// </summary>

@@ -4,17 +4,16 @@ using System.Text;
 
 namespace CellBlockLibrary
 {
-    public class GridAndCellIterations
+    public class GridAndCellIterations : IGridAndCellIterations
     {
 
-        public GridAndCellIterations(Grid grid)
+        public GridAndCellIterations()
         {
-            this.Grid = grid;
             this.ChangeHasOccured = false;
             this.ProvesNoSolution = false;
         }
 
-        private readonly Grid Grid;
+        public Grid Grid { get; set; }
         public bool ProvesNoSolution { get; set; }
         public bool ChangeHasOccured { get; set; }
 
@@ -141,9 +140,9 @@ namespace CellBlockLibrary
         /// </summary>
         public void FillCellIndex()
         {
-            foreach (MainBlock block in Grid.Blocks)
+            foreach (MainBlock mainBlock in Grid.Blocks)
             {
-                block.MarkPossilbeReach();
+                mainBlock.MarkPossilbeReach();
             }
         }
 

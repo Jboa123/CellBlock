@@ -21,14 +21,10 @@ namespace CellBlockLibrary
             }
             SolvedCellCount = 0;
          }
-
-
         public int SolvedCellCount { get; set; }
         public  Cell[,] Cells { get; set; } = new Cell[7, 7]; //Grid made up of 7x7 block of cells
 
         public  List<MainBlock> Blocks { get; set; } = new List<MainBlock>(); // List of blocks. Sum of areas = 49, contains list of defined cells
-
-        public HashSet<Cell> PreDefinedCells { get; set; } = new HashSet<Cell>();
 
         /// <summary>
         /// Are the input coordinates within the grid? if so returns true.

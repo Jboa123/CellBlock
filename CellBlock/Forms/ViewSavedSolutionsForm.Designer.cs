@@ -1,4 +1,4 @@
-﻿namespace _7by7
+﻿namespace CellBlock
 {
     partial class ViewSavedSolutionsForm
     {

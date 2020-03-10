@@ -1,4 +1,4 @@
-﻿namespace _7by7
+﻿namespace CellBlock
 {
     partial class SolutionForm
     {
@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.SaveToSQLDBButton = new System.Windows.Forms.Button();
+            this.SolutionsListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // SaveToSQLDBButton
             // 
-            this.SaveToSQLDBButton.Location = new System.Drawing.Point(92, 376);
+            this.SaveToSQLDBButton.Location = new System.Drawing.Point(544, 455);
             this.SaveToSQLDBButton.Name = "SaveToSQLDBButton";
             this.SaveToSQLDBButton.Size = new System.Drawing.Size(139, 23);
             this.SaveToSQLDBButton.TabIndex = 0;
@@ -41,11 +42,21 @@
             this.SaveToSQLDBButton.UseVisualStyleBackColor = true;
             this.SaveToSQLDBButton.Click += new System.EventHandler(this.SaveToSQLDBButton_Click);
             // 
+            // SolutionsListBox
+            // 
+            this.SolutionsListBox.FormattingEnabled = true;
+            this.SolutionsListBox.Location = new System.Drawing.Point(506, 27);
+            this.SolutionsListBox.Name = "SolutionsListBox";
+            this.SolutionsListBox.Size = new System.Drawing.Size(223, 420);
+            this.SolutionsListBox.TabIndex = 1;
+            this.SolutionsListBox.SelectedIndexChanged += new System.EventHandler(this.SolutionsListBox_SelectedIndexChanged);
+            // 
             // SolutionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(349, 490);
+            this.ClientSize = new System.Drawing.Size(765, 490);
+            this.Controls.Add(this.SolutionsListBox);
             this.Controls.Add(this.SaveToSQLDBButton);
             this.Name = "SolutionForm";
             this.Text = "Solution";
@@ -57,5 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button SaveToSQLDBButton;
+        private System.Windows.Forms.ListBox SolutionsListBox;
     }
 }

@@ -9,21 +9,30 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CellBlockLibrary;
 
-namespace _7by7
+
+namespace CellBlock
 {
     public partial class SolutionForm : Form
     {
 
-        public SolutionForm(List<TextBox> textBoxes)
+        public SolutionForm(IDisplaySolutionData data, IGUIManagement gUIManagement)
         {
-
-
+            Data = data;
+            _gUIManagement = gUIManagement;
             InitializeComponent();
-            foreach (TextBox txtbox in textBoxes)
-            {
-                this.Controls.Add(txtbox);
-            }
+
+           SolutionsListBox.DataSource = data.GetIndexedList();
+           SolutionsListBox.DisplayMember = "Index";
+
+
+            this.Show();
+
+
         }
+        private IGUIManagement _gUIManagement;
+        private IDisplaySolutionData Data;
+        private List<TextBox> txtBoxes;
+
 
 
 
@@ -40,6 +49,20 @@ namespace _7by7
             DataAccess.SaveDataToDB(dataList);*/
 
         }
+
+        private void SolutionsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            Grid grid = Data.SolvedGrids[SolutionsListBox.SelectedIndex];
+         ///   _gUIManagement.ClearTextBoxes(this.Controls);
+            txtBoxes = _gUIManagement.CreateGUIFromData(grid, Data.PredefinedCells);
+            foreach (TextBox textBox in txtBoxes)
+            {
+                this.Controls.Add(textBox);
+            }
+        }
+
+
     }
 
 

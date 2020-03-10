@@ -4,19 +4,19 @@ using System.Text;
 
 namespace CellBlockLibrary
 {
-    public class PossibleBLockGeneration
+    public class PossibleBlockGeneration : IPossibleBlockGeneration
     {
-        public PossibleBLockGeneration(Grid grid)
+        public PossibleBlockGeneration()
         {
-            Grid = grid;
-        }
-        private readonly Grid Grid;
 
-        public void PopulateCells()
+        }
+        public Grid Grid { get; set; }
+
+        public void CreateAllPossibleBlock()
         {
             foreach (MainBlock MBlock in Grid.Blocks)
             {
-                      CreatePossibleBlocks(MBlock);   // creates a list of all possible blocks for a block index. does not add blocks off the grid or blocks containing a different block index
+                CreatePossibleBlocks(MBlock);   // creates a list of all possible blocks for a block index. does not add blocks off the grid or blocks containing a different block index
             }
         }
 
@@ -26,7 +26,7 @@ namespace CellBlockLibrary
             List<int[]> PossibleDimensions = FillPossibleDimensions(MBlock);
             foreach (int[] dimension in PossibleDimensions)
             {
-                int xOffset = dimension[0]-1, yOffset = dimension[1]-1;
+                int xOffset = dimension[0] - 1, yOffset = dimension[1] - 1;
 
                 for (int i = -xOffset; i <= 0; i++)
                 {
@@ -65,12 +65,14 @@ namespace CellBlockLibrary
                         if (!tempCell.IsOwnedByBlockOtherThan(block))
                         {
                             tempHash.Add(tempCell);
-                        }else
+                        }
+                        else
                         {
                             return;
                         }
 
-                    }else
+                    }
+                    else
                     {
                         return;
                     }
@@ -90,24 +92,24 @@ namespace CellBlockLibrary
         }
 
 
-            /// <summary>
-            /// Gather all possible dimension pairs based on the this.Area in the form of int[2]. Adds all the arrays to a list.
-            /// Considers rotations of a rectangle as different dimensions.
-            /// </summary>
-            private List<int[]> FillPossibleDimensions(MainBlock MBlock)
+        /// <summary>
+        /// Gather all possible dimension pairs based on the this.Area in the form of int[2]. Adds all the arrays to a list.
+        /// Considers rotations of a rectangle as different dimensions.
+        /// </summary>
+        private List<int[]> FillPossibleDimensions(MainBlock MBlock)
+        {
+            List<int[]> PossibleDimensions = new List<int[]>();
             {
-                List<int[]> PossibleDimensions = new List<int[]>();
+                for (int i = 1; i <= MBlock.Area; i++)
                 {
-                    for (int i = 1; i <= MBlock.Area; i++)
+                    if (MBlock.Area % i == 0 && MBlock.Area / i <= 7 && i <= 7)
                     {
-                        if (MBlock.Area % i == 0 && MBlock.Area/ i <= 7 && i <= 7)
-                        {
-                            PossibleDimensions.Add(new int[2] { i, MBlock.Area/ i });
-                        }
+                        PossibleDimensions.Add(new int[2] { i, MBlock.Area / i });
                     }
                 }
-                return PossibleDimensions;
             }
-        
+            return PossibleDimensions;
+        }
+
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CellBlockLibrary;
 
-namespace _7by7
+namespace CellBlock
 {
     public partial class ViewSavedSolutionsForm : Form
     {

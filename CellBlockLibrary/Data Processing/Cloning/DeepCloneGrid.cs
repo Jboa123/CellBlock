@@ -7,18 +7,19 @@ namespace CellBlockLibrary
     /// <summary>
     /// Used to deep clone the Grid. Allowing
     /// </summary>
-    public class DeepCloneGrid
+    public class DeepCloneGrid : IDeepCloneGrid
     {
-        public DeepCloneGrid(Grid grid)
+        public DeepCloneGrid()
         {
-            OriginalGrid = grid;
+
         }
 
-        private readonly Grid OriginalGrid;
-        private Grid NewGrid { get; set; } = new Grid();
+        public Grid OriginalGrid { get; set; }
+        private Grid NewGrid { get; set; }
 
         public Grid CloneGrid()
         {
+            NewGrid = new Grid();
             NewGrid.Blocks = CloneMainBlocksList();
             DeepCloneAllCells();
             return NewGrid;
@@ -51,7 +52,7 @@ namespace CellBlockLibrary
         private MainBlock DeepCloneMainBlock(MainBlock originalMBlock)
         {
             ///sets new main bl
-            MainBlock newMainBlock = new MainBlock(originalMBlock.Index,originalMBlock.Area,originalMBlock.DefinedCell, NewGrid);
+            MainBlock newMainBlock = new MainBlock(originalMBlock.Index, originalMBlock.Area, originalMBlock.DefinedCell, NewGrid);
             newMainBlock.PossibleBlocks = ClonePossibleBlocksList(originalMBlock);
             return newMainBlock;
         }
@@ -71,7 +72,7 @@ namespace CellBlockLibrary
 
 
             foreach (PossibleBlock originalPossibleBlock in originalMainBlock.PossibleBlocks)
-            {   
+            {
                 //Deep clone each original PossibeBlock and add to the new PossibleBlock list
                 newPossibleBlocks.Add(DeepClonePossibleBlock(originalPossibleBlock));
             }
@@ -99,7 +100,7 @@ namespace CellBlockLibrary
         /// </summary>
         private void DeepCloneAllCells()
         {
-            for(int i = 0; i<7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
                 {
@@ -109,7 +110,7 @@ namespace CellBlockLibrary
                 }
             }
         }
-        
+
         /// <summary>
         /// A new Cell is created. The new Cell has identical primitive data types but points to a new Grid.
         /// A new Dictionary of possible indexes is created. The  integer values are copied from the original cell to the new cell.
@@ -136,7 +137,7 @@ namespace CellBlockLibrary
         /// </summary>
         /// <param name="newCell"></param>
         /// <param name="originalCell"></param>
-        private void CreateNewCellPBlockReference (Cell newCell, Cell originalCell)
+        private void CreateNewCellPBlockReference(Cell newCell, Cell originalCell)
         {
             //PossibleIndexs is a dictionary of <int, List<PossibleBlock>>. The int represents the Blocks Index and the List<PossibleBlock> represents
             //all the PossibleBlocks of given index that contain this cell
@@ -147,7 +148,7 @@ namespace CellBlockLibrary
 
                 //The Key represents BlockIndex
                 int blockIndex = KVP.Key;
-                foreach(PossibleBlock originalPBlock in KVP.Value)
+                foreach (PossibleBlock originalPBlock in KVP.Value)
                 {
                     //Search for the orignal Possible Block in original Grid.Blocks[relevant].PossibleBlocks and get the position in the list.
                     //The New and Original MainBlocks and PossibleBlocks have the equivalent block at the same position in the list.
@@ -161,7 +162,7 @@ namespace CellBlockLibrary
                     newPBlock.Cells.Add(newCell);
 
                     //The input Cells are the equivalents. If the original Cell is the TopLeftCell then the new Cell must also be
-                    if(originalPBlock.TopLeftCell == originalCell)
+                    if (originalPBlock.TopLeftCell == originalCell)
                     {
                         newPBlock.TopLeftCell = newCell;
                     }

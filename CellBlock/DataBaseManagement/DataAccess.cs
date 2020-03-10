@@ -8,7 +8,7 @@ using System.Data;
 using CellBlockLibrary;
 
 
-namespace _7by7
+namespace CellBlock
 {
     public static class DataAccess
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CellBlockLibrary;
 
-namespace _7by7
+namespace CellBlock
 {
     public class SolutionFromDB
     {

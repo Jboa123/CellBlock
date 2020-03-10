@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 using CellBlockLibrary;
 
-namespace _7by7
+namespace CellBlock
 {
     public partial class _7by7Form : Form
     {
@@ -17,39 +18,27 @@ namespace _7by7
         {
             InitializeComponent();
             GUIManagement gridGUI = new GUIManagement();
-            GUI = gridGUI.CreateBlankGUI();
-            foreach(TextBox txtbox in GUI)
+            GUITextBoxes = gridGUI.CreateBlankGUI();
+            foreach(TextBox txtbox in GUITextBoxes)
             {
                 this.Controls.Add(txtbox);
             }
 
         }
 
-        public List<TextBox> GUI { get; set; }
+        public List<TextBox> GUITextBoxes { get; set; }
 
         private void SolveButton_Click(object sender, EventArgs e)
         {
-            Grid grid = new Grid();
+            //uses Autofac for constructor injection
+            var container = ContainerConfig.Configure();
 
-           // TestCase4();
-
-            GUItoData toData = new GUItoData(grid);
-            toData.ReadGUIInput(GUI);       //Sets up Blocks and adds them to Grid.Blocks. Sets DefinedCells
-
-            PossibleBLockGeneration dataIni = new PossibleBLockGeneration(grid);
-            dataIni.PopulateCells();        //Creates all the Possible Blocks
-
-            SolutionList Solutions = new SolutionList();
-
-            SolvePuzzle solvePuzzle = new SolvePuzzle(grid, Solutions.SolvedGrids);
-            solvePuzzle.Solve();
-
-
-            foreach (Grid solvedGrid in Solutions.SolvedGrids)
+            using(var scope = container.BeginLifetimeScope())
             {
-                GUIManagement newForm = new GUIManagement();
-                newForm.ShowSolutionForm(solvedGrid);
+                var app = scope.Resolve<IRunFullSolution>();
+                app.RunSolution(GUITextBoxes);
             }
+
 
         }
 

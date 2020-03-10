@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using System.Drawing;
 using CellBlockLibrary;
 
-namespace _7by7
+namespace CellBlock
 {
-    public class GUIManagement
+    public class GUIManagement : IGUIManagement
     {
         public GUIManagement()
         {
@@ -17,6 +17,10 @@ namespace _7by7
         }
         private List<TextBox> VisualGrid { get; set; } = new List<TextBox>();
 
+        /// <summary>
+        /// Creates a list of 49 pain textboxes arranged in a 7x7 square to visually represent the grid.
+        /// </summary>
+        /// <returns></returns>
         public List<TextBox> CreateBlankGUI()
         {
 
@@ -28,45 +32,67 @@ namespace _7by7
                     txtBox.Location = new Point(40 * i + 40, 40 * j + 40);
                     txtBox.Name = ("Cell" + i + j);
                     txtBox.Text = "";
-                    txtBox.Width =30;
+                    txtBox.Width = 30;
                     VisualGrid.Add(txtBox);
                 }
             }
             return VisualGrid;
         }
-
-        private List<TextBox> CreateGUIFromData(Grid grid)
+        /// <summary>
+        /// Takes in a solved grid to display. Each block is given a distinct colour and the orginal values in the cell are displayed.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="PredefinedCells"></param>
+        /// <returns></returns>
+        public List<TextBox> CreateGUIFromData(Grid grid, Dictionary<int,int> PredefinedCells)
         {
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
                 {
 
-                    TextBox txtBox = VisualGrid[7*i + j];
+                    TextBox txtBox = VisualGrid[7 * i + j];
                     Cell cell = grid.Cells[i, j];
                     int index = cell.OwnedBy;
-                    
+
                     txtBox.BackColor = getColour(index);
                     txtBox.Text = "";
 
-                    if (grid.PreDefinedCells.Contains(cell))
-                    {
-                        int initialValue = grid.Blocks[cell.OwnedBy].Area;
-                        txtBox.Text = initialValue.ToString();     // shows intials number
-
-        }
                 }
+            }
+
+            foreach(KeyValuePair<int,int> KVP in PredefinedCells)
+            {
+                VisualGrid[KVP.Key].Text = KVP.Value.ToString();
             }
             return VisualGrid;
         }
 
-        public void ShowSolutionForm(Grid grid)
+        /// <summary>
+        /// Removes the currenly displayed textboxs from the form, allowing a different se to be displayed
+        /// </summary>
+        /// <param name="Controls"></param>
+        public void ClearTextBoxes(Control.ControlCollection Controls)
         {
-            VisualGrid = CreateGUIFromData(grid);
-            SolutionForm newForm = new SolutionForm(VisualGrid);
-            newForm.Show();
+            Action<Control.ControlCollection> ClearGui = null;
+
+            ClearGui = (controls) =>
+            {
+                foreach (Control control in controls)
+                    if (control is TextBox)
+                    {
+                        controls.Remove(control);
+                    }
+            };
+
+            ClearGui(Controls);
         }
 
+        /// <summary>
+        /// Maps integers to a defined colour.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
         private Color getColour(int i)
         {
             switch (i)

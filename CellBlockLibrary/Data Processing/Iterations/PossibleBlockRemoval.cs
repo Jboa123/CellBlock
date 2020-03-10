@@ -4,16 +4,16 @@ using System.Text;
 
 namespace CellBlockLibrary
 {
-    public class PossibleBlockRemoval
+    public class PossibleBlockRemoval : IPossibleBlockRemoval
     {
-        public PossibleBlockRemoval(Grid grid)
+        public PossibleBlockRemoval()
         {
-            this.Grid = grid;
+
             ChangeHasOccured = false;
             ProvesNoSolution = false;
         }
 
-        private readonly Grid Grid;
+        public Grid Grid { get; set; }
         /// <summary>
         ///Keeps track of a change in Grid.Blocks[ALL].PossibleBlocks.
         /// </summary>
@@ -28,11 +28,12 @@ namespace CellBlockLibrary
             foreach (MainBlock MBlock in Grid.Blocks)
             {
                 RemoveImpossibleBlocks(MBlock);
-                if(MBlock.PossibleBlocks.Count ==1)
+                if (MBlock.PossibleBlocks.Count == 1)
                 {
                     PossibleBlock pBlock = MBlock.PossibleBlocks[0];
                     pBlock.SetAsMainBlock();
-                }else if(MBlock.PossibleBlocks.Count == 0)
+                }
+                else if (MBlock.PossibleBlocks.Count == 0)
                 {
                     ProvesNoSolution = true;
                 }

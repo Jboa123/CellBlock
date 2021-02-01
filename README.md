@@ -1,3 +1,7 @@
 # Cell Block
-A puzzle game  
-Cell Block Overview is an excel file explaining the program.
+
+
+Version 1 of Cell Block puzzle game.
+
+
+it is function except for the save and load due to local connection strings.
